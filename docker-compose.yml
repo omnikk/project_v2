@@ -1,0 +1,33 @@
+services:
+  data-service:
+    build:
+      context: ./data-service
+      dockerfile: Dockerfile
+    container_name: beauty_data
+    volumes:
+      - ./data-service/salon_data.db:/app/data/salon_data.db
+    restart: unless-stopped
+
+  dashboard-service:
+    build:
+      context: ./dashboard-service
+      dockerfile: Dockerfile
+    container_name: beauty_dashboard
+    volumes:
+      - dashboard_data:/app
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: beauty_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - data-service
+      - dashboard-service
+    restart: unless-stopped
+
+volumes:
+  dashboard_data:
