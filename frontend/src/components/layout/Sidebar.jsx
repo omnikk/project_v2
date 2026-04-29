@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const NAV = [
-  { path: "/",          icon: "📊", label: "Обзор" },
-  { path: "/dashboards",icon: "🗂️",  label: "Дашборды" },
-  { path: "/salons",    icon: "🏪", label: "Салоны" },
-  { path: "/services",  icon: "✂️",  label: "Услуги" },
+  { path: "/",          icon: null, label: "Обзор" },
+  { path: "/dashboards",icon: null, label: "Дашборды" },
+  { path: "/salons",    icon: null, label: "Салоны" },
+  { path: "/services",  icon: null, label: "Услуги" },
 ];
 
 export default function Sidebar() {
@@ -34,7 +34,7 @@ export default function Sidebar() {
       }}>
         {!collapsed && (
           <span style={{ color: "#cba6f7", fontWeight: 800, fontSize: 16 }}>
-            💄 Beauty BI
+            Beauty BI
           </span>
         )}
         <button
@@ -44,7 +44,7 @@ export default function Sidebar() {
             color: "#a6adc8", cursor: "pointer", fontSize: 18,
           }}
         >
-          {collapsed ? "→" : "←"}
+          {collapsed ? ">" : "<"}
         </button>
       </div>
 
@@ -77,8 +77,8 @@ export default function Sidebar() {
                 if (!active) e.currentTarget.style.background = "transparent";
               }}
             >
-              <span style={{ fontSize: 18 }}>{item.icon}</span>
               {!collapsed && <span>{item.label}</span>}
+              {collapsed && <span style={{ fontSize: 13 }}>{item.label.slice(0, 2)}</span>}
             </div>
           );
         })}

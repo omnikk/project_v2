@@ -45,20 +45,19 @@ export default function Overview() {
 
   if (loading) return (
     <div style={{ color: "#585b70", textAlign: "center", marginTop: 80, fontSize: 16 }}>
-      ⏳ Загрузка данных...
+      Загрузка данных...
     </div>
   );
 
   return (
     <div>
       <h1 style={{ color: "#cba6f7", marginBottom: 8, fontSize: 22, fontWeight: 800 }}>
-        📊 Обзор сети
+        Обзор сети
       </h1>
       <p style={{ color: "#585b70", marginBottom: 28, fontSize: 13 }}>
         200 салонов · данные за 2024–2026
       </p>
 
-     {/* Кнопки экспорта */}
       <div style={{ display: "flex", gap: 10, marginBottom: 28 }}>
         <button
           onClick={() => exportAppointments(activeFilters)}
@@ -68,7 +67,7 @@ export default function Overview() {
             fontSize: 12, fontWeight: 600, cursor: "pointer",
           }}
         >
-          ⬇ Экспорт записей CSV
+          Экспорт записей CSV
         </button>
         <button
           onClick={() => exportSalonsSummary(activeFilters)}
@@ -78,11 +77,10 @@ export default function Overview() {
             fontSize: 12, fontWeight: 600, cursor: "pointer",
           }}
         >
-          ⬇ Экспорт салонов CSV
+          Экспорт салонов CSV
         </button>
       </div>
-      
-      {/* KPI карточки */}
+
       <div style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
@@ -98,9 +96,7 @@ export default function Overview() {
         <KPI label="Всего записей"  value={formatNumber(kpi?.total_appointments)} color="#cba6f7" />
       </div>
 
-      {/* Графики */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 20 }}>
-        {/* Выручка по месяцам */}
         <div style={{
           background: "#181825", border: "1px solid #313244",
           borderRadius: 12, padding: 24,
@@ -124,7 +120,6 @@ export default function Overview() {
           </ResponsiveContainer>
         </div>
 
-        {/* По источникам */}
         <div style={{
           background: "#181825", border: "1px solid #313244",
           borderRadius: 12, padding: 24,

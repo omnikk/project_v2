@@ -21,10 +21,9 @@ export default function GlobalFilters() {
       flexWrap: "wrap",
     }}>
       <span style={{ color: "#cdd6f4", fontWeight: 600, fontSize: 13 }}>
-        🔍 Фильтры:
+        Фильтры:
       </span>
 
-      {/* Дата от */}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <label style={{ color: "#a6adc8", fontSize: 12 }}>От:</label>
         <input
@@ -35,7 +34,6 @@ export default function GlobalFilters() {
         />
       </div>
 
-      {/* Дата до */}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <label style={{ color: "#a6adc8", fontSize: 12 }}>До:</label>
         <input
@@ -46,7 +44,6 @@ export default function GlobalFilters() {
         />
       </div>
 
-      {/* Источник */}
       <select
         value={filters.source}
         onChange={(e) => updateFilter("source", e.target.value)}
@@ -58,7 +55,6 @@ export default function GlobalFilters() {
         ))}
       </select>
 
-      {/* Регион */}
       <select
         value={filters.region_id}
         onChange={(e) => updateFilter("region_id", e.target.value)}
@@ -70,7 +66,6 @@ export default function GlobalFilters() {
         ))}
       </select>
 
-      {/* Салон */}
       <select
         value={filters.salon_id}
         onChange={(e) => updateFilter("salon_id", e.target.value)}
@@ -82,9 +77,8 @@ export default function GlobalFilters() {
         ))}
       </select>
 
-      {/* Сброс */}
       <button onClick={resetFilters} style={resetBtnStyle}>
-        ✕ Сбросить
+        Сбросить
       </button>
     </div>
   );

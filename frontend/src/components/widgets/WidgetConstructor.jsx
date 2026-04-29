@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { METRIC_LABELS, DIMENSION_LABELS, CHART_LABELS } from "../../utils/formatters";
 
-// Какие типы графиков допустимы для каждой разбивки
 const ALLOWED_CHARTS = {
   time:    ["line", "bar", "table"],
   source:  ["bar", "pie", "table"],
@@ -11,7 +10,6 @@ const ALLOWED_CHARTS = {
   weekday: ["bar", "table"],
 };
 
-// Какие метрики допустимы для каждой разбивки
 const ALLOWED_METRICS = {
   time:    ["revenue", "count", "avg_check"],
   source:  ["revenue", "count"],
@@ -37,23 +35,18 @@ export default function WidgetConstructor({ onAdd, onClose }) {
   const set = (key, val) => {
     setForm((prev) => {
       const next = { ...prev, [key]: val };
-
-      // При смене разбивки — сбрасываем тип графика и метрику если недопустимы
       if (key === "dimension") {
         const allowed_c = ALLOWED_CHARTS[val] || CHARTS;
         const allowed_m = ALLOWED_METRICS[val] || METRICS;
         if (!allowed_c.includes(next.chart_type)) next.chart_type = allowed_c[0];
         if (!allowed_m.includes(next.metric))     next.metric     = allowed_m[0];
       }
-
       return next;
     });
   };
 
   const allowedCharts  = ALLOWED_CHARTS[form.dimension]  || CHARTS;
   const allowedMetrics = ALLOWED_METRICS[form.dimension] || METRICS;
-
-  // KPI доступен всегда
   const finalCharts = [...new Set([...allowedCharts, "kpi"])];
 
   return (
@@ -74,10 +67,9 @@ export default function WidgetConstructor({ onAdd, onClose }) {
         overflowY: "auto",
       }}>
         <h2 style={{ color: "#cba6f7", marginBottom: 24, fontSize: 18 }}>
-          ➕ Создать виджет
+          Создать виджет
         </h2>
 
-        {/* Название */}
         <div style={fieldStyle}>
           <label style={labelStyle}>Название</label>
           <input
@@ -87,7 +79,6 @@ export default function WidgetConstructor({ onAdd, onClose }) {
           />
         </div>
 
-        {/* Разбивка — выбираем первой, она определяет остальное */}
         <div style={fieldStyle}>
           <label style={labelStyle}>Разбивка данных</label>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -107,7 +98,6 @@ export default function WidgetConstructor({ onAdd, onClose }) {
           </div>
         </div>
 
-        {/* Метрика */}
         <div style={fieldStyle}>
           <label style={labelStyle}>Метрика</label>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -132,7 +122,6 @@ export default function WidgetConstructor({ onAdd, onClose }) {
           </div>
         </div>
 
-        {/* Группировка по времени */}
         {form.dimension === "time" && (
           <div style={fieldStyle}>
             <label style={labelStyle}>Группировка по времени</label>
@@ -154,7 +143,6 @@ export default function WidgetConstructor({ onAdd, onClose }) {
           </div>
         )}
 
-        {/* Тип визуализации */}
         <div style={fieldStyle}>
           <label style={labelStyle}>Тип визуализации</label>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -184,7 +172,6 @@ export default function WidgetConstructor({ onAdd, onClose }) {
           )}
         </div>
 
-        {/* Превью конфигурации */}
         <div style={{
           background: "#181825", borderRadius: 8, padding: "12px 16px",
           marginBottom: 24, border: "1px solid #313244",
@@ -202,7 +189,6 @@ export default function WidgetConstructor({ onAdd, onClose }) {
           </div>
         </div>
 
-        {/* Кнопки */}
         <div style={{ display: "flex", gap: 12 }}>
           <button
             onClick={() => onAdd(form)}

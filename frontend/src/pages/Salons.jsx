@@ -23,14 +23,12 @@ export default function Salons() {
   return (
     <div>
       <h1 style={{ color: "#cba6f7", marginBottom: 8, fontSize: 22, fontWeight: 800 }}>
-        🏪 Рейтинг салонов
+        Рейтинг салонов
       </h1>
       <p style={{ color: "#585b70", marginBottom: 24, fontSize: 13 }}>
         Топ по выбранным фильтрам · {data.length} салонов
       </p>
 
-      {/* Сортировка */}
-      {/* Сортировка + экспорт */}
       <div style={{ display: "flex", gap: 8, marginBottom: 20, alignItems: "center" }}>
         {[["revenue","Выручка"],["count","Записей"],["avg_check","Средний чек"]].map(([key, label]) => (
           <button key={key} onClick={() => setSort(key)} style={{
@@ -51,12 +49,12 @@ export default function Salons() {
             fontSize: 12, fontWeight: 600, cursor: "pointer",
           }}
         >
-          ⬇ CSV
+          Экспорт CSV
         </button>
       </div>
 
       {loading ? (
-        <div style={{ color: "#585b70", textAlign: "center", marginTop: 60 }}>⏳ Загрузка...</div>
+        <div style={{ color: "#585b70", textAlign: "center", marginTop: 60 }}>Загрузка...</div>
       ) : (
         <div style={{ background: "#181825", border: "1px solid #313244", borderRadius: 12, overflow: "hidden" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>

@@ -62,7 +62,6 @@ export default function Dashboards() {
   return (
     <div style={{ display: "flex", gap: 20, height: "calc(100vh - 120px)" }}>
 
-      {/* Левая панель — список дашбордов */}
       <div style={{
         width: 240, flexShrink: 0,
         background: "#181825", border: "1px solid #313244",
@@ -88,15 +87,14 @@ export default function Dashboards() {
             onMouseEnter={(e) => { if (active?.id !== d.id) e.currentTarget.style.background = "#23232e"; }}
             onMouseLeave={(e) => { if (active?.id !== d.id) e.currentTarget.style.background = "transparent"; }}
           >
-            <span>🗂️ {d.name}</span>
+            <span>{d.name}</span>
             <button
               onClick={(e) => { e.stopPropagation(); handleDeleteDashboard(d.id); }}
               style={{ background: "none", border: "none", color: "#585b70", cursor: "pointer", fontSize: 14 }}
-            >✕</button>
+            >x</button>
           </div>
         ))}
 
-        {/* Создать дашборд */}
         {showCreate ? (
           <div style={{ marginTop: 8 }}>
             <input
@@ -128,16 +126,14 @@ export default function Dashboards() {
             borderRadius: 8, color: "#a6adc8", padding: "10px",
             fontSize: 12, cursor: "pointer", width: "100%",
           }}>
-            ＋ Новый дашборд
+            + Новый дашборд
           </button>
         )}
       </div>
 
-      {/* Правая часть — холст дашборда */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
         {active ? (
           <>
-            {/* Заголовок дашборда */}
             <div style={{
               display: "flex", alignItems: "center", justifyContent: "space-between",
               marginBottom: 16,
@@ -155,20 +151,18 @@ export default function Dashboards() {
                 color: "#1e1e2e", padding: "10px 20px",
                 fontSize: 13, fontWeight: 700, cursor: "pointer",
               }}>
-                ➕ Добавить виджет
+                + Добавить виджет
               </button>
             </div>
 
-            {/* Сетка виджетов */}
             {loading ? (
-              <div style={{ color: "#585b70", textAlign: "center", marginTop: 60 }}>⏳ Загрузка...</div>
+              <div style={{ color: "#585b70", textAlign: "center", marginTop: 60 }}>Загрузка...</div>
             ) : active.widgets?.length === 0 ? (
               <div style={{
                 flex: 1, display: "flex", flexDirection: "column",
                 alignItems: "center", justifyContent: "center",
                 color: "#585b70", gap: 16,
               }}>
-                <div style={{ fontSize: 48 }}>📊</div>
                 <div style={{ fontSize: 16 }}>Дашборд пуст</div>
                 <div style={{ fontSize: 13 }}>Нажмите «Добавить виджет» чтобы начать</div>
               </div>
@@ -194,14 +188,12 @@ export default function Dashboards() {
             alignItems: "center", justifyContent: "center",
             color: "#585b70", gap: 16,
           }}>
-            <div style={{ fontSize: 48 }}>🗂️</div>
             <div style={{ fontSize: 16 }}>Выберите дашборд слева</div>
             <div style={{ fontSize: 13 }}>или создайте новый</div>
           </div>
         )}
       </div>
 
-      {/* Конструктор виджета */}
       {showWidget && (
         <WidgetConstructor
           onAdd={handleAddWidget}

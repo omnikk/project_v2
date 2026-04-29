@@ -23,7 +23,7 @@ export default function Services() {
   return (
     <div>
       <h1 style={{ color: "#cba6f7", marginBottom: 8, fontSize: 22, fontWeight: 800 }}>
-        ✂️ Аналитика услуг
+        Аналитика услуг
       </h1>
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28 }}>
@@ -38,12 +38,12 @@ export default function Services() {
             fontSize: 12, fontWeight: 600, cursor: "pointer",
           }}
         >
-          ⬇ CSV
+          Экспорт CSV
         </button>
       </div>
 
       {loading ? (
-        <div style={{ color: "#585b70", textAlign: "center", marginTop: 60 }}>⏳ Загрузка...</div>
+        <div style={{ color: "#585b70", textAlign: "center", marginTop: 60 }}>Загрузка...</div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {data.map((item, i) => (
