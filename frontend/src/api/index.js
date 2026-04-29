@@ -1,7 +1,5 @@
 import axios from "axios";
 
-// В Docker запросы идут через nginx proxy
-// В dev режиме — напрямую на порты
 const IS_DEV = import.meta.env.DEV;
 
 const dataAPI = axios.create({
@@ -9,7 +7,7 @@ const dataAPI = axios.create({
 });
 
 const dashAPI = axios.create({
-  baseURL: IS_DEV ? "http://localhost:8002" : "http://localhost:8002",
+  baseURL: IS_DEV ? "http://localhost:8002" : "",
 });
 
 // ─── Фильтры / справочники ─────────────────────────────────────
@@ -46,29 +44,29 @@ export const getDiscounts = (params) =>
 
 // ─── Дашборды ──────────────────────────────────────────────────
 export const getDashboards = () =>
-  dashAPI.get("/api/dashboards").then((r) => r.data);
+  dashAPI.get("/dash-api/dashboards").then((r) => r.data);
 
 export const createDashboard = (data) =>
-  dashAPI.post("/api/dashboards", data).then((r) => r.data);
+  dashAPI.post("/dash-api/dashboards", data).then((r) => r.data);
 
 export const getDashboard = (id) =>
-  dashAPI.get(`/api/dashboards/${id}`).then((r) => r.data);
+  dashAPI.get(`/dash-api/dashboards/${id}`).then((r) => r.data);
 
 export const updateDashboard = (id, data) =>
-  dashAPI.put(`/api/dashboards/${id}`, data).then((r) => r.data);
+  dashAPI.put(`/dash-api/dashboards/${id}`, data).then((r) => r.data);
 
 export const deleteDashboard = (id) =>
-  dashAPI.delete(`/api/dashboards/${id}`);
+  dashAPI.delete(`/dash-api/dashboards/${id}`);
 
 // ─── Виджеты ───────────────────────────────────────────────────
 export const createWidget = (dashboardId, data) =>
-  dashAPI.post(`/api/dashboards/${dashboardId}/widgets`, data).then((r) => r.data);
+  dashAPI.post(`/dash-api/dashboards/${dashboardId}/widgets`, data).then((r) => r.data);
 
 export const updateWidget = (widgetId, data) =>
-  dashAPI.put(`/api/widgets/${widgetId}`, data).then((r) => r.data);
+  dashAPI.put(`/dash-api/widgets/${widgetId}`, data).then((r) => r.data);
 
 export const deleteWidget = (widgetId) =>
-  dashAPI.delete(`/api/widgets/${widgetId}`);
+  dashAPI.delete(`/dash-api/widgets/${widgetId}`);
 
 // ─── Экспорт ───────────────────────────────────────────────────
 export const exportAppointments = (params) => {
