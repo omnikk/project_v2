@@ -150,6 +150,8 @@ def revenue_over_time(
 def by_source(
     date_from: Optional[str] = None,
     date_to:   Optional[str] = None,
+    source:    Optional[str] = None,
+    region_id: Optional[int] = None,
     salon_id:  Optional[int] = None,
     db: Session = Depends(get_db)
 ):
@@ -159,7 +161,7 @@ def by_source(
         func.sum(models.Appointment.final_price).label("revenue"),
     ).filter(models.Appointment.status == "completed")
     q = apply_filters(q, models.Appointment, date_from, date_to,
-                      None, None, salon_id, db=db)
+                      source, region_id, salon_id, db=db)
     rows = q.group_by(models.Appointment.source).all()
     return [{"source": r.source, "count": r.count,
              "revenue": round(r.revenue or 0, 2)} for r in rows]
@@ -171,6 +173,7 @@ def by_salon(
     date_to:   Optional[str] = None,
     source:    Optional[str] = None,
     region_id: Optional[int] = None,
+    salon_id:  Optional[int] = None,
     limit:     int = 20,
     db: Session = Depends(get_db)
 ):
@@ -192,6 +195,8 @@ def by_salon(
         q = q.filter(models.Appointment.source == source)
     if region_id:
         q = q.filter(models.Salon.region_id == region_id)
+    if salon_id:
+        q = q.filter(models.Salon.id == salon_id)
 
     rows = q.group_by(models.Salon.id).order_by(
         func.sum(models.Appointment.final_price).desc()
@@ -213,6 +218,7 @@ def by_service(
     date_from: Optional[str] = None,
     date_to:   Optional[str] = None,
     source:    Optional[str] = None,
+    region_id: Optional[int] = None,
     salon_id:  Optional[int] = None,
     db: Session = Depends(get_db)
 ):
@@ -224,7 +230,7 @@ def by_service(
     ).join(models.Appointment, models.Service.id == models.Appointment.service_id
     ).filter(models.Appointment.status == "completed")
     q = apply_filters(q, models.Appointment, date_from, date_to,
-                      source, None, salon_id, db=db)
+                      source, region_id, salon_id, db=db)
     rows = q.group_by(models.Service.id).order_by(
         func.sum(models.Appointment.final_price).desc()
     ).all()
@@ -237,6 +243,8 @@ def by_payment(
     date_from: Optional[str] = None,
     date_to:   Optional[str] = None,
     source:    Optional[str] = None,
+    region_id: Optional[int] = None,
+    salon_id:  Optional[int] = None,
     db: Session = Depends(get_db)
 ):
     q = db.query(
@@ -245,7 +253,7 @@ def by_payment(
         func.sum(models.Appointment.final_price).label("revenue"),
     ).filter(models.Appointment.status == "completed")
     q = apply_filters(q, models.Appointment, date_from, date_to,
-                      source, None, None, db=db)
+                      source, region_id, salon_id, db=db)
     rows = q.group_by(models.Appointment.payment_method).all()
     return [{"method": r.payment_method, "count": r.count,
              "revenue": round(r.revenue or 0, 2)} for r in rows]
@@ -256,6 +264,8 @@ def by_weekday(
     date_from: Optional[str] = None,
     date_to:   Optional[str] = None,
     source:    Optional[str] = None,
+    region_id: Optional[int] = None,
+    salon_id:  Optional[int] = None,
     db: Session = Depends(get_db)
 ):
     DAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
@@ -265,7 +275,7 @@ def by_weekday(
         func.sum(models.Appointment.final_price).label("revenue"),
     ).filter(models.Appointment.status == "completed")
     q = apply_filters(q, models.Appointment, date_from, date_to,
-                      source, None, None, db=db)
+                      source, region_id, salon_id, db=db)
     rows = q.group_by(models.Appointment.day_of_week).order_by(
         models.Appointment.day_of_week
     ).all()
@@ -278,6 +288,8 @@ def discounts(
     date_from: Optional[str] = None,
     date_to:   Optional[str] = None,
     source:    Optional[str] = None,
+    region_id: Optional[int] = None,
+    salon_id:  Optional[int] = None,
     db: Session = Depends(get_db)
 ):
     q = db.query(
@@ -287,7 +299,7 @@ def discounts(
         func.sum(models.Appointment.bonus_spent).label("total_bonus"),
     )
     q = apply_filters(q, models.Appointment, date_from, date_to,
-                      source, None, None, db=db)
+                      source, region_id, salon_id, db=db)
     rows = q.group_by(models.Appointment.discount_pct).order_by(
         models.Appointment.discount_pct
     ).all()
@@ -311,6 +323,7 @@ def export_appointments(
     date_from: Optional[str] = None,
     date_to:   Optional[str] = None,
     source:    Optional[str] = None,
+    region_id: Optional[int] = None,
     salon_id:  Optional[int] = None,
     db: Session = Depends(get_db)
 ):
@@ -334,7 +347,8 @@ def export_appointments(
     ).join(models.Salon,   models.Appointment.salon_id   == models.Salon.id
     ).join(models.Service, models.Appointment.service_id == models.Service.id)
 
-    q = apply_filters(q, models.Appointment, date_from, date_to, source, None, salon_id, db=db)
+    q = apply_filters(q, models.Appointment, date_from, date_to,
+                      source, region_id, salon_id, db=db)
     q = q.limit(50000)
 
     output = io.StringIO()
@@ -366,6 +380,9 @@ def export_appointments(
 def export_salons_summary(
     date_from: Optional[str] = None,
     date_to:   Optional[str] = None,
+    source:    Optional[str] = None,
+    region_id: Optional[int] = None,
+    salon_id:  Optional[int] = None,
     db: Session = Depends(get_db)
 ):
     q = db.query(
@@ -384,14 +401,19 @@ def export_salons_summary(
         func.avg(models.Appointment.final_price).label("avg_check"),
         func.sum(models.Appointment.discount_amount).label("discounts"),
         func.sum(models.Appointment.bonus_spent).label("bonus_spent"),
-    ).join(models.Master,      models.Salon.id == models.Master.salon_id
-    ).join(models.Appointment, models.Master.id == models.Appointment.master_id
-    ).join(models.Region,      models.Salon.region_id == models.Region.id)
+    ).join(models.Appointment, models.Salon.id == models.Appointment.salon_id
+    ).join(models.Region, models.Salon.region_id == models.Region.id)
 
     if date_from:
         q = q.filter(models.Appointment.start_time >= datetime.fromisoformat(date_from))
     if date_to:
         q = q.filter(models.Appointment.start_time <= datetime.fromisoformat(date_to))
+    if source:
+        q = q.filter(models.Appointment.source == source)
+    if region_id:
+        q = q.filter(models.Salon.region_id == region_id)
+    if salon_id:
+        q = q.filter(models.Salon.id == salon_id)
 
     rows = q.group_by(models.Salon.id).order_by(
         func.sum(models.Appointment.final_price).desc()
@@ -425,6 +447,8 @@ def export_services(
     date_from: Optional[str] = None,
     date_to:   Optional[str] = None,
     source:    Optional[str] = None,
+    region_id: Optional[int] = None,
+    salon_id:  Optional[int] = None,
     db: Session = Depends(get_db)
 ):
     q = db.query(
@@ -436,7 +460,8 @@ def export_services(
         func.sum(models.Appointment.discount_amount).label("discounts"),
     ).join(models.Appointment, models.Service.id == models.Appointment.service_id
     ).filter(models.Appointment.status == "completed")
-    q = apply_filters(q, models.Appointment, date_from, date_to, source, None, None, db=db)
+    q = apply_filters(q, models.Appointment, date_from, date_to,
+                      source, region_id, salon_id, db=db)
     rows = q.group_by(models.Service.id).order_by(
         func.sum(models.Appointment.final_price).desc()
     ).all()
