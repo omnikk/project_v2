@@ -492,4 +492,32 @@ docker compose logs -f
 docker compose restart data-service
 ```
 
+<img width="1912" height="989" alt="image" src="https://github.com/user-attachments/assets/b9219d86-0c0e-4f88-8404-dc7de132e54f" />
+
+
+<img width="1719" height="790" alt="image" src="https://github.com/user-attachments/assets/7da77da4-07b0-42d1-a75e-d2ee72e14da5" />
+
+
+<img width="1904" height="905" alt="image" src="https://github.com/user-attachments/assets/4f24f1e2-985f-43e4-b234-8ec8e42e210e" />
+
+
+<img width="1670" height="845" alt="image" src="https://github.com/user-attachments/assets/0449f736-b093-4570-994f-ad930d63767c" />
+
+
+<img width="906" height="771" alt="image" src="https://github.com/user-attachments/assets/937efd4e-f0a2-4f67-9940-a64b14339ccc" />
+
+
+<img width="1217" height="440" alt="image" src="https://github.com/user-attachments/assets/e009b048-f339-42a0-b04e-0c726030be09" />
+
+
+<img width="1220" height="458" alt="image" src="https://github.com/user-attachments/assets/3b4f1f49-61fb-4106-983a-a9a5c63eb4b8" />
+
+
+<img width="1893" height="894" alt="image" src="https://github.com/user-attachments/assets/0b249bc8-24a6-4b74-a0dc-eb8e2a9320a3" />
+
+
+<img width="1885" height="898" alt="image" src="https://github.com/user-attachments/assets/fc3ab926-f2f9-4be9-aff2-bb03c618924c" />
+
+
+<img width="513" height="340" alt="image" src="https://github.com/user-attachments/assets/42956828-856c-44d1-bc93-712123f9e6ee" />
 
