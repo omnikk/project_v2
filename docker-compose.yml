@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: beauty_data
     volumes:
-      - ./data-service/salon_data.db:/app/data/salon_data.db
+      - salon_data:/app/data    # ← именованный volume вместо bind mount файла
     restart: unless-stopped
 
   dashboard-service:
@@ -30,4 +30,5 @@ services:
     restart: unless-stopped
 
 volumes:
+  salon_data:
   dashboard_data:
